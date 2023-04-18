@@ -1,0 +1,73 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Hackergram{% block title %}{% endblock %}</title>
+        <link rel="shortcut icon" type="image/jpg" href = "{{ photos_folder }}icon.jpg">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+        <script src="{{ url_for('static', filename='js/jquery-3.6.4.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    </head>
+    <header>
+        <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-secondary py-3">
+            <a class="navbar-brand" href="/">
+                <img src="{{ photos_folder }}icon.jpg" width="30" height="30"> Hackergram
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="ml-auto">
+                    <ul class="navbar-nav">
+                        {% if not current_user %}
+                            <li class="nav-item"><a class="nav-link" href="{{ url_for('login') }}">Sign In</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ url_for('signup') }}">Sign Up</a></li>
+                        {% else %}
+                            <li class="nav-item"><a class="nav-link" href="{{ url_for('create_post') }}">New Post</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ url_for('requests') }}">Requests</a></li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Search</a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="{{ url_for('users') }}">Search Users</a>
+                                    <a class="dropdown-item" href="{{ url_for('posts') }}">Search Posts</a>
+                                </div>
+                            </li>
+                            <li class="nav-item"><a class="nav-link" href="{{ url_for('profile') }}?username={{ current_user.username }}">My Profile</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ url_for('settings') }}">Settings</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">Logout</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-6 col-lg-4 mx-auto"></div>
+                <div class="col-sm-6 col-lg-4 mx-auto">
+                    {% autoescape false %}
+                    <center>
+                        {% for category, message in get_flashed_messages(with_categories=true) %}
+                            <div class="flash mb-2 {{ category }}">{{ message }}</div>
+                        {% endfor %}
+                        <hr class="half-rule" color="grey" />
+                    </center>
+                    {% endautoescape %}
+                </div>
+                <div class="col-sm-6 col-lg-4 mx-auto"></div>
+            </div>
+        </div>
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer fixed-bottom bg-light">
+        <div>
+            <center>
+                <span class="text-muted">Hackergram. Developed for a Master's Dissertation @ IST.</span>
+            </center>
+        </div>
+    </footer>
+</html>

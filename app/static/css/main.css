@@ -1,0 +1,64 @@
+body {
+    padding-top: 70px;
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+}
+.container {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.flash.success {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background-color: #cfe0f9;
+    border: 1px solid #375a7f;
+    color: #375a7f;
+    padding: 10px;
+    border-radius: 5px;
+}
+.flash.error {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background-color: #ffcccc;
+    border: 1px solid #dc3545;
+    color: #dc3545;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.navbar-nav li a {
+    font-size: 18px !important;
+    color: white !important;
+}
+.navbar {
+    padding: 10px !important;
+}
+.navbar-nav li a:hover {
+    color: #9FA6B2 !important;
+}
+
+.navbar-dark .navbar-nav .nav-link.active,
+.navbar-dark .navbar-nav .nav-link:hover,
+.navbar-dark .navbar-nav .nav-link:focus {
+  background-color: #375a7f !important;
+  color: #fff !important;
+}
+
+.profile {
+    color: white !important;
+    text-decoration: none !important;
+}
+.profile:hover {
+    color: whitesmoke !important;
+}
+
+.friends {
+    color: white !important;
+    font-weight: bold !important;
+}
+.friends:hover {
+    color: white !important;
+    text-decoration: underline !important;
+}

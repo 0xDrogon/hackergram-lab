@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %} - @{{ username }}'s Friends{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid mt-5">
+    <div class="row justify-content-center mt-5">
+        <div class="col-lg-6">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Search friends</h4>
+                </div>
+                <div class="card-body">
+                    <form action="/friends" method="get">
+                        <div class="form-group row mx-sm-3 mb-2">
+                            <input type="hidden" name="username" value="{{ username }}" />
+                            <div class="col">
+                                <input type="text" class="form-control" id="search" name="search" placeholder="Search by username">
+                            </div>
+                            <div class="col-auto">
+                                <button type="submit" class="btn btn-primary">Search</button>
+                            </div>
+                        </div>
+                    </form>
+                    {% if query %}
+                        {% autoescape false %}
+                        {% if friends|length > 1 or friends|length == 0 %}
+                            <h6>{{ friends|length }} matches for {{ query }}</h6>
+                        {% else %}
+                            <h6>{{ friends|length }} match for {{ query }}</h6>
+                        {% endif %}
+                        {% endautoescape %}
+                    {% else %}
+                        {% if friends|length == 0 %}
+                            <h6>No friends.</h6>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row justify-content-center mt-4 mb-4">
+        <div class="col-lg-6">
+            {% autoescape false %}
+            {% for f in friends %}
+                <div class="card mb-3 shadow">
+                    <div class="card-header bg-primary text-white fw-bold h4">
+                        <a href="{{ url_for('profile') }}?username={{ f.username }}" class="profile"> 
+                            <img src="{{ photos_folder + f.photo }}" alt="" width="50" height="50">
+                            @{{ f.username }}
+                        </a>
+                    </div>
+                    <div class="card-body bg-secondary">
+                        <h5 class="card-title">{{ f.name }}</h5>
+                        {% if f.bio %}
+                            <p class="card-text">{{ f.bio }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+            {% endautoescape %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

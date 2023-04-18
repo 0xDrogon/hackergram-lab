@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block title %} - Search posts{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid mt-5">
+    <div class="row justify-content-center mt-5">
+        <div class="col-lg-6">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Search posts</h4>
+                </div>
+                <div class="card-body">
+                    <form action="/posts" method="get">
+                        <div class="form-group row mx-sm-3 mb-2">
+                            <div class="col">
+                                <input type="text" class="form-control" id="search" name="search" placeholder="Search by content">
+                            </div>
+                            <div class="col-auto">
+                                <button type="submit" class="btn btn-primary">Search</button>
+                            </div>
+                        </div>
+                    </form>
+                    {% if query %}
+                        {% autoescape false %}
+                        {% if posts|length > 1 or posts|length == 0 %}
+                            <h6>{{ posts|length }} matches for {{ query }}</h6>
+                        {% else %}
+                            <h6>{{ posts|length }} match for {{ query }}</h6>
+                        {% endif %}
+                        {% endautoescape %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row justify-content-center mt-4 mb-4">
+        <div class="col-lg-6">
+            {% autoescape false %}
+            {% for p in posts %}
+                <div class="card mb-3 shadow">
+                    <div class="card-header bg-primary text-white fw-bold h4">
+                        <a href="{{ url_for('profile') }}?username={{ p.author }}" class="profile"> 
+                            <img src="{{ photos_folder + p.photo }}" alt="" width="50" height="50">
+                            {{ p.name }} (@{{ p.author }})
+                        </a>
+                    </div>
+                    <div class="card-body bg-secondary">
+                        <p class="card-text h6">({{ p.posted_at }})</p>
+                        <br>
+                        <p class="card-text h5">{{ p.content }}</p>
+                        {% if p.author == current_user.username %}
+                            <div class="btn-group float-right" role="group">
+                                <form class="form-horizontal mr-2" action="/edit_post" method="get">
+                                    <input type="hidden" name="id" value="{{ p.id }}" />
+                                    <button type="submit" class="btn btn-primary">Edit</button>
+                                </form>
+                                <form class="form-horizontal" action="/delete_post" method="post">
+                                    <input type="hidden" name="id" value="{{ p.id }}" /> 
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+            {% endautoescape %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

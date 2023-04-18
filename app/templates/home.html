@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %} - Homepage{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid py-5" id="welcome">
+
+    <div class="row mb-5">
+        <div class="col-md-12">
+            <h3 class="text-center">
+                    Welcome to Hackergram, 
+                    {% if current_user.name %}
+                        {{ current_user.name }}!
+                    {% else %}
+                        {{ current_user.username }}!
+                    {% endif %}
+            </h3>
+        </div>
+    </div>
+
+    <hr class="half-rule" color="grey"/>
+
+    {% autoescape false %}
+    <div class="row mx-4 justify-content-center">
+        {% for post in posts %}
+        <div class="col-md-8">
+            <div class="card my-4">
+                <div class="card-header bg-primary text-white fw-bold h4">
+                    <a href="{{ url_for('profile') }}?username={{ post.author }}" class="profile"> 
+                        <img src="{{ photos_folder + post.photo }}" alt="" width="50" height="50">
+                        {{ post.name }} (@{{ post.author }})
+                    </a>
+                </div>
+                <div class="card-body bg-secondary">
+                    <p class="card-text h6">({{ post.posted_at }})</p>
+                    <br>
+                    <p class="card-text h5">{{ post.content }}</p>
+                    {% if post.author == current_user.username %}
+                        <div class="btn-group float-right" role="group">
+                            <form class="form-horizontal mr-2" action="/edit_post" method="get">
+                                <input type="hidden" name="id" value="{{ post.id }}" />
+                                <button type="submit" class="btn btn-primary">Edit</button>
+                            </form>
+                            <form class="form-horizontal" action="/delete_post" method="post">
+                                <input type="hidden" name="id" value="{{ post.id }}" /> 
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endautoescape %}
+</div>
+
+{% endblock %}

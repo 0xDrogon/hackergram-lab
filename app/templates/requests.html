@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %} - Friendship Requests{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-4"></div>
+        <div class="col-4">
+            <center>
+                <h4>Friendship Requests</h4>
+            </center>
+        </div>
+        <div class="col-4"></div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row justify-content-center mt-4 mb-4">
+        <div class="col-lg-6">
+            {% if friend_requests|length == 0 %}
+                <p>You have no friendship requests.</p>
+            {% elif friend_requests|length == 1 %}
+                <p>You have 1 friendship request.</p>
+            {% else %}    
+                <p>You have {{ friend_requests|length }} friendship requests.</p>
+            {% endif %}     
+            {% autoescape false %}
+            {% for pf in friend_requests %}
+                <div class="card mb-3 shadow">
+                    <div class="card-header bg-primary text-white fw-bold h4">
+                        <a href="{{ url_for('profile') }}?username={{ pf.username }}" class="profile"> 
+                            <img src="{{ photos_folder + pf.photo }}" alt="" width="50" height="50">
+                            @{{ pf.username }}
+                        </a>
+                    </div>
+                    <div class="card-body bg-secondary">
+                        <h5 class="card-title">{{ pf.name }}</h5>
+                        {% if pf.bio %}
+                            <p class="card-text">{{ pf.bio }}</p>
+                        {% endif %}
+                        <div class="btn-group" role="group">
+                            <form class="form-horizontal mr-2" action="/requests" method="get">
+                                <input type="hidden" name="username" value="{{ pf.username }}">
+                                <input type="hidden" name="origin" value="requests">
+                                <button type="submit" class="btn btn-primary">Accept</button>
+                            </form>
+                            <form class="form-horizontal" action="/remove_request" method="post">
+                                <input type="hidden" name="username" value="{{ pf.username }}">
+                                <input type="hidden" name="origin" value="requests">
+                                <button type="submit" class="btn btn-danger">Decline</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            {% endautoescape %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+

@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block title %} - @{{ profile.username }}{% endblock %}
+
+{% block content %}
+
+{% autoescape false %}
+<div class="container-fluid mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white h4 d-flex justify-content-between align-items-center">
+                    <div>
+                        <img src="{{ photos_folder + profile.photo }}" alt="" width="80" height="80"> @{{ profile.username }}
+                    </div>
+                    <div>
+                        <a href="{{ url_for('friends') }}?username={{ profile.username }}" class="friends h6" style="margin-left: auto;">Friends</a>
+                    </div>
+                </div>
+                <div class="card-body bg-secondary">
+                    <h4 class="card-title">{{ profile.name }}</h4>
+                    {% if profile.bio %}
+                        <p class="card-text">{{ profile.bio }}</p>
+                    {% endif %}
+                    {% if profile.username != current_user.username and not is_friend %}
+                        {% if is_pending_requester and not is_pending_requestee %}
+                            <form class="form-horizontal" action="/remove_request" method="post">
+                                <input type="hidden" name="username" value="{{ profile.username }}" />
+                                <input type="hidden" name="origin" value="profile">
+                                <button type="submit" class="btn btn-danger">Remove request</button>
+                            </form>
+                        {% elif not is_pending_requester and is_pending_requestee %}
+                            <div class="btn-group" role="group">
+                                <form class="form-horizontal mr-2" action="/requests" method="get">
+                                    <input type="hidden" name="username" value="{{ profile.username }}">
+                                    <input type="hidden" name="origin" value="profile">
+                                    <button type="submit" class="btn btn-primary">Accept request</button>
+                                </form>
+                                <form class="form-horizontal" action="/remove_request" method="post">
+                                    <input type="hidden" name="username" value="{{ profile.username }}" />
+                                    <input type="hidden" name="origin" value="profile">
+                                    <button type="submit" class="btn btn-danger">Decline request</button>
+                                </form>
+                            </div>
+                        {% else %}
+                            <form class="form-horizontal" action="/request_friend" method="post">
+                                <input type="hidden" name="username" value="{{ profile.username }}" />
+                                <button type="submit" class="btn btn-primary">Add friend</button>
+                            </form>
+                        {% endif %}
+                    {% elif profile.username != current_user.username and is_friend %}
+                        <form class="form-horizontal" action="/remove_friend" method="post">
+                            <input type="hidden" name="username" value="{{ profile.username }}" />
+                            <button type="submit" class="btn btn-danger">Remove friend</button>
+                        </form>        
+                    {% endif %}
+                    <hr>
+                    {% if profile.posts %}
+                        <ul class="list-group">
+                            {% for post in profile.posts %}
+                                <div class="col-md-12">
+                                    <div class="card my-4">
+                                        <div class="card-body">
+                                            <p class="card-text h6">({{ post.posted_at }})</p>
+                                            <br>
+                                            <p class="card-text h5">{{ post.content }}</p>
+                                            {% if post.author == current_user.username %}
+                                                <div class="btn-group float-right" role="group">
+                                                    <form class="form-horizontal mr-2" action="/edit_post" method="get">
+                                                        <input type="hidden" name="id" value="{{ post.id }}" />
+                                                        <button type="submit" class="btn btn-primary">Edit</button>
+                                                    </form>
+                                                    <form class="form-horizontal" action="/delete_post" method="post">
+                                                        <input type="hidden" name="id" value="{{ post.id }}" /> 
+                                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                                    </form>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="card-text">This user has not made any posts yet.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endautoescape %}
+
+{% endblock %}

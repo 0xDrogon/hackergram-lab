@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %} - Edit Post{% endblock %}
+
+<h1 class="text-success text-center">Update</h1>
+
+{% block content %}
+
+<div class="container-fluid mt-5">
+    <div class="row justify-content-center mt-5">
+        <div class="col-lg-6">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Edit your post</h4>
+            </div>
+            <div class="card-body">
+            <form action="/edit_post" method="post">
+                <input type="hidden" name="id" value="{{ post.id }}" />
+                <div class="form-group">
+                <label for="content">Post content</label>
+                <textarea class="form-control" name="content" id="content" rows="5" placeholder="Write your post here">{{ post.content }}</textarea>
+                </div>
+                <div>
+                    <center>
+                        <button type="submit" class="btn btn-primary">Edit</button>
+                    </center>
+                </div>
+            </form>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
