@@ -23,6 +23,7 @@
                             <li class="nav-item"><a class="nav-link" href="{{ url_for('login') }}">Sign In</a></li>
                             <li class="nav-item"><a class="nav-link" href="{{ url_for('signup') }}">Sign Up</a></li>
                         {% else %}
+                            <div type="hidden" id="user" value="{{ current_user.username }}"></div>
                             <li class="nav-item"><a class="nav-link" href="{{ url_for('create_post') }}">New Post</a></li>
                             <li class="nav-item"><a class="nav-link" href="{{ url_for('requests') }}">Requests</a></li>
                             <li class="nav-item dropdown">
