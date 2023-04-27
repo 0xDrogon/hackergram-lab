@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_mysqldb import MySQL
+import sys
 
 
 app = Flask(__name__)
@@ -21,4 +22,5 @@ from models import *
 from views import * 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=True)
+    port = 80 if len(sys.argv) < 2 else sys.argv[1]
+    app.run(host='0.0.0.0', port=port)
