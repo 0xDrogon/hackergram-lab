@@ -1,5 +1,8 @@
+DROP DATABASE IF EXISTS hackergramdb;
 CREATE DATABASE hackergramdb;
 
+DROP USER IF EXISTS 'hackergram'@'localhost';
+DROP USER IF EXISTS 'hackergram'@'%';
 CREATE USER 'hackergram'@'localhost' IDENTIFIED BY 'hackergrampass';
 CREATE USER 'hackergram'@'%' IDENTIFIED BY 'hackergrampass';
 

@@ -1,22 +1,29 @@
 from hackergram import mysql
+import subprocess
+
+
+def reset():
+    with open('start.sql', 'r') as f:
+        sql = f.read()
+    subprocess.run(['mysql', '-u', 'root'], input=sql.encode())
 
 
 # Function for SELECT queries
 def get_from_database(query):
-    c = mysql.connection.cursor()
-    c.execute(query)
+    con = mysql.connection.cursor()
+    con.execute(query)
     mysql.connection.commit()
-    data = c.fetchall()
-    c.close()
+    data = con.fetchall()
+    con.close()
     return data
 
 
 # Function for UPDATE, INSERT and DELETE queries
 def commit_to_database(query):
-    c = mysql.connection.cursor()
-    c.execute(query)
+    con = mysql.connection.cursor()
+    con.execute(query)
     mysql.connection.commit()
-    c.close()
+    con.close()
 
 
 # Gets user with given username, password to login
@@ -175,15 +182,15 @@ def get_friend_requests(username):
 def accept_friend_request(username, accept_friend):
     query = "INSERT INTO Friends (username1, username2)"
     query+= " VALUES ('%s', '%s');" % (accept_friend, username)
-    c = mysql.connection.cursor()
-    c.execute(query)
+    con = mysql.connection.cursor()
+    con.execute(query)
 
     query = "DELETE FROM Requests"
     query+= " WHERE username1='%s' AND username2='%s';" % (accept_friend, username)
-    c.execute(query)
+    con.execute(query)
     mysql.connection.commit()
 
-    c.close()
+    con.close()
     return True
 
 

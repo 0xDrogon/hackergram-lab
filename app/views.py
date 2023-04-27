@@ -9,6 +9,14 @@ def error(msg):
     return render_template('error.html', msg=msg)
 
 
+# Renders errors
+@app.route('/reset', methods=['GET', 'POST'])
+def reset():
+    models.reset()
+    flash('Hackergram was reset', 'success')
+    return redirect(url_for('home'))
+
+
 # Homepage (redirects to login if user is not logged in)
 @app.route('/')
 def home():
