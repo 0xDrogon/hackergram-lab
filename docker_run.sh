@@ -17,6 +17,6 @@ if [ $i_EXIT_CODE -ne 0 ]; then
     exit
 fi
 
-docker run -d -p 5000:5000 --name ${CONTAINER_NAME} ${CONTAINER_NAME}
+docker run -d -p 5000:80 --name ${CONTAINER_NAME} ${CONTAINER_NAME}
 
 echo "Container is running!"
