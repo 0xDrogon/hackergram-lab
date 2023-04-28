@@ -44,7 +44,7 @@ CREATE TABLE Requests (
     FOREIGN KEY (username2) REFERENCES Users(username)
 );
 
-INSERT INTO Users(username, password, name, bio) VALUES ('administrator', '1_4m_Th3_4dm1n', 'Admin', 'I am the Administrator of Hackergram.');
+INSERT INTO Users(username, password, name, bio) VALUES ('admin', '1_4m_Th3_4dm1n', 'Administrator', 'I am the Administrator of Hackergram.');
 INSERT INTO Users(username, password, name, bio, photo) VALUES ('mr_robot', 'elliot123', 'Mr. Robot', 'Control is an illusion.', 'mrrobot.png');
 INSERT INTO Users(username, password, name, bio, photo) VALUES ('dpr', 'silk-road', 'Dread Pirate Roberts', '#FreeRoss', 'dpr.jpg');
 INSERT INTO Users(username, password, name, bio) VALUES ('satoshi', 'bitcoin2009', 'Satoshi Nakamoto', 'The Times 03/Jan/2009 Chancellor on brink of second bailout for banks');
@@ -55,7 +55,7 @@ INSERT INTO Users(username, password, name) VALUES ('anon1', '1', 'Anonymous #1'
 INSERT INTO Users(username, password, name) VALUES ('anon2', '2', 'Anonymous #2');
 INSERT INTO Users(username, password, name) VALUES ('anon3', '3', 'Anonymous #3');
 
-INSERT INTO Posts(author, content) VALUES ('administrator', 'These walls have eyes and ears.');
+INSERT INTO Posts(author, content) VALUES ('admin', 'These walls have eyes and ears.');
 INSERT INTO Posts(author, content) VALUES ('mr_robot', 'We are all living in each other''s paranoia.');
 INSERT INTO Posts(author, content) VALUES ('heisenberg', 'Stay out of my territory.');
 INSERT INTO Posts(author, content) VALUES ('dpr', 'Every action you take outside the scope of government control strengthens the market and weakens the state.');
