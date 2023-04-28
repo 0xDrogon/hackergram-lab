@@ -6,7 +6,12 @@ import models as models
 
 # Renders errors
 def error(msg):
-    return render_template('error.html', msg=msg)
+    if 'username' in session:
+        username = session['username']
+        user = models.get_user_settings(username)
+        return render_template('error.html', current_user=user, msg=msg)
+    else:
+        return render_template('error.html', msg=msg)
 
 
 # Renders errors
