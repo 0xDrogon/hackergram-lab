@@ -36,7 +36,12 @@ def home():
 # Signs in users
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-
+    if 'username' in session:
+        username = session['username']
+        user = models.get_user_settings(username)
+        flash('You are already logged in', 'error')
+        return redirect(url_for('home'))
+    
     if request.method == 'GET':
         return render_template('login.html')
 
@@ -64,6 +69,11 @@ def login():
 # Signs up new users
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
+    if 'username' in session:
+        username = session['username']
+        user = models.get_user_settings(username)
+        flash('You are already logged in', 'error')
+        return redirect(url_for('home'))
 
     if request.method == 'GET':
         return render_template('signup.html')
@@ -124,7 +134,7 @@ def settings():
         new_bio = user.bio
 
     new_photo = request.files['photo']
-    if not new_photo:
+    if not new_photo or new_photo == '':
         new_photo_filename = user.photo
     else:
         new_photo_filename = ''.join(random.choices(string.ascii_lowercase + string.digits, k=8)) + '_' + new_photo.filename
@@ -173,7 +183,7 @@ def profile():
             is_friend = False
             is_pending_requestee = False
             is_pending_requester = False
-            if u in models.get_friends_aux(username):
+            if u in models.get_username_of_friends(username):
                 is_friend = True
             else:
                 if models.is_request_pending(u, username):
@@ -226,6 +236,9 @@ def edit_post():
 
     if request.method == 'GET':
         post_id = request.args.get('id')
+        if int(post_id) not in models.get_post_ids(username):
+            flash("You cannot edit other users' posts", 'error')
+            return redirect(url_for('home'))
         try:
             post = models.get_post(post_id)
         except Exception as e:
@@ -234,6 +247,10 @@ def edit_post():
 
     new_content = request.form['content']
     post_id = request.form['id']
+
+    if int(post_id) not in models.get_post_ids(username):
+        flash("You cannot edit other users' posts", 'error')
+        return redirect(url_for('home'))
 
     if not new_content:
         flash("You cannot publish an empty post", 'error')
@@ -253,15 +270,18 @@ def edit_post():
 
 
 # Deletes post with [id]
-@app.route('/delete_post', methods=["POST"])
+@app.route('/delete_post', methods=["GET"])
 def delete_post():
     if 'username' in session:
         username = session['username']
         user = models.get_user_settings(username)
     else:
         return redirect(url_for('login'))
-    if request.method == 'POST':
-        post_id = request.form['id']
+    if request.method == 'GET':
+        post_id = request.args.get('id')
+        if int(post_id) not in models.get_post_ids(username):
+            flash("You cannot delete other users' posts", 'error')
+            return redirect(url_for('home'))
         try:
             post = models.delete_post(post_id)
         except Exception as e:
@@ -286,7 +306,7 @@ def request_friend():
     if not new_friend or new_friend == username:
         flash("Invalid username", 'error')
         return redirect(url_for('home'))
-    if new_friend in models.get_friends_aux(username): 
+    if new_friend in models.get_username_of_friends(username): 
         flash("@%s is already your friend" % new_friend, 'error')
         return redirect(url_for('home'))
     if models.is_request_pending(new_friend, username):
@@ -383,7 +403,7 @@ def remove_friend():
         return redirect(url_for('login'))
     
     friend = request.form['username']
-    if not friend or friend not in models.get_friends_aux(username):
+    if not friend or friend not in models.get_username_of_friends(username):
         return error("Introduce an existing friend.")
     try:
         success = models.remove_friend(username, friend)

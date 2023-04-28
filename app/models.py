@@ -144,6 +144,19 @@ def delete_post(id):
     return True
 
 
+# Gets ids of posts made by user
+def get_post_ids(username):
+    query = "SELECT id FROM Posts"
+    query+= " WHERE author = '%s'" % (username)
+
+    data = get_from_database(query)
+    ids = []
+
+    for d in data:
+        ids.append(d[0])
+    return ids
+
+
 # Creates a friend request
 def new_friend_request(username, new_friend):
     query = "INSERT INTO Requests (username1, username2)"
@@ -234,7 +247,7 @@ def get_friends(username, search):
 
 
 # Gets friends of user (just username)
-def get_friends_aux(username):
+def get_username_of_friends(username):
     query = "SELECT username2 FROM Friends"
     query+= " WHERE username1 = '%s'" % (username)
     query+= " UNION"
