@@ -20,7 +20,7 @@ This vulnerable web application consists of a simple social networking website. 
 Hackergram is not an attempt at replicating or improving upon any existing social networking websites. Instead, it provides a controlled environment where students and security enthusiasts can test their knowledge and skills without causing any harm to real-world systems or users. Hackergram was created to be a simple, yet realistic web application and its features were purposefully designed to be vulnerable to these attacks.
 
 
-## Deploy
+## Setting up the lab
 
 ### 1. Clone this repository
 
