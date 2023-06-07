@@ -41,6 +41,13 @@ $ ./docker_run.sh
 http://localhost:5000
 ```
 
+### Docker image
+
+A Docker image is also available at `https://hub.docker.com/r/0xdrogon/hackergram`
+```
+docker pull 0xdrogon/hackergram
+```
+
 
 
 ## Default users
