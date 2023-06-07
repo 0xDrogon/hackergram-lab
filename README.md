@@ -49,7 +49,6 @@ docker pull 0xdrogon/hackergram
 ```
 
 
-
 ## Default users
 
 | Username   | Password       |
@@ -64,7 +63,6 @@ docker pull 0xdrogon/hackergram
 | anon1      | 1              | 
 | anon2      | 2              | 
 | anon3      | 3              | 
-
 
 
 ## Attacks tested
@@ -108,7 +106,6 @@ docker pull 0xdrogon/hackergram
         - on `/posts` endpoint
     - Using SQLi to change other user's profile
         - on `/settings` endpoint
-
 
 
 ## Disclaimer
